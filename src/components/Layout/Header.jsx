@@ -1,7 +1,15 @@
 import PropTypes from "prop-types";
 
-const Header = ({ children }) => {
-  return <div>{children}</div>;
+import "./Header.css";
+import HeaderCartButton from "./HeaderCartButton";
+
+const Header = () => {
+  return (
+    <div className="header">
+      <h1>Trend Mağaza</h1>
+      <HeaderCartButton />
+    </div>
+  );
 };
 
 Header.propTypes = {
