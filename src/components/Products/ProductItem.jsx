@@ -1,13 +1,18 @@
+import { useContext } from "react";
 import products from "../productData";
 
-import "./ProductItem.css"
+import "./ProductItem.css";
 import Rating from "./Rating";
+import { CartCRUDContext } from "../../Contexts/CartCRUDContext";
 
 const ProductItem = () => {
   const productList = products;
 
-  console.log(productList[0].name);
+  const cartCrudCtx = useContext(CartCRUDContext);
 
+  const { addItem, items, totalAmount } = cartCrudCtx;
+  console.log(items);
+  console.log(totalAmount);
   return (
     <>
       {productList?.map((product) => (
@@ -16,10 +21,12 @@ const ProductItem = () => {
           <h3 className="product-title">{product.name}</h3>
           <p>{product.description}</p>
           <div className="product-info">
-            <Rating/>
+            <Rating />
             <span className="price">{product.price}₺</span>
           </div>
-          <button className="add-to-cart">Sepete Ekle</button>
+          <button className="add-to-cart" onClick={() => addItem(product)}>
+            Sepete Ekle
+          </button>
         </li>
       ))}
     </>
