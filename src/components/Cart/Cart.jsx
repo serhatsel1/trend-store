@@ -1,16 +1,17 @@
 import CartItem from "./CartItem";
-import { CartShowContext } from "../../Contexts/CartShowContext";
-import { useContext } from "react";
 import OffCanvas from "../UI/OffCanvas";
-import "./Cart.css";
+import { CartShowContext } from "../../Contexts/CartShowContext";
 import { CartCRUDContext } from "../../Contexts/CartCRUDContext";
+import { useContext } from "react";
+import "./Cart.css";
 
 const Cart = () => {
   const CartContext = useContext(CartShowContext);
   const { setCartIsShow } = CartContext;
 
   const CartCrudCtx = useContext(CartCRUDContext);
-  const { items, totalAmount } = CartCrudCtx;
+  const { items, totalAmount ,clearItem} = CartCrudCtx;
+  const hasItems = items.length > 0;
 
   const cartItems = (
     <ul className="cart-items">
@@ -37,12 +38,14 @@ const Cart = () => {
         {cartItems}
         <div className="total">
           <span>Toplam Değer</span>
-          <span>{totalAmount.toFixed(2)} ₺</span>
+          <span>{totalAmount} ₺</span>
         </div>
-        <div className="actions">
-          <button className="cart-order">Sipariş Ver</button>
-          <button className="cart-clear">Sepeti Temizle</button>
-        </div>
+        {hasItems && (
+          <div className="actions">
+            <button className="cart-order">Sipariş Ver</button>
+            <button className="cart-clear" onClick={() => clearItem()}>Sepeti Temizle</button>
+          </div>
+        )}
       </>
     </OffCanvas>
   );

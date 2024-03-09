@@ -22,19 +22,23 @@ const cartReducer = (state, action) => {
             state.items[existingCartItemIndex].amount + action.item.amount,
         };
       } else {
-        updatedItems.push(action.item); // Concatenate the new item to the existing items array
+        updatedItems = [...state.items, action.item];
       }
       return {
-        ...state,
         items: updatedItems,
         totalAmount: state.totalAmount + action.item.price * action.item.amount,
       };
     case "REMOVE":
-      // Implement remove logic here
-      return state;
+      const filteredItem = state.items.filter((item) => item.id !== action.id);
+      const itemToRemove = state.items.find((item) => item.id === action.id);
+      return {
+        items: filteredItem,
+        totalAmount:
+          state.totalAmount - itemToRemove.price * itemToRemove.amount,
+      };
+
     case "CLEAR":
-      // Implement clear logic here
-      return state;
+      return { items: [], totalAmount: 0 };
     default:
       return state;
   }
@@ -51,8 +55,12 @@ export const CartCRUDProvider = ({ children }) => {
     addItem: (item) => {
       dispatchCartAction({ type: "ADD", item });
     },
-    removeItem: () => {},
-    clearItem: () => {},
+    removeItem: (id) => {
+      dispatchCartAction({ type: "REMOVE", id });
+    },
+    clearItem: () => {
+      dispatchCartAction({ type: "CLEAR" });
+    },
   };
 
   return (
