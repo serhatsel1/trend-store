@@ -10,9 +10,7 @@ const ProductItem = () => {
 
   const cartCrudCtx = useContext(CartCRUDContext);
 
-  const { addItem, items, totalAmount } = cartCrudCtx;
-  console.log(items);
-  console.log(totalAmount);
+  const { addItem } = cartCrudCtx;
   return (
     <>
       {productList?.map((product) => (
