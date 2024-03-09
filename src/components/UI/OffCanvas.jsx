@@ -26,13 +26,19 @@ const OffCanvas = ({ children, setCartIsShow }) => {
         <Backdrop setCartIsShow={setCartIsShow} />,
         portalElement
       )}
-      {ReactDOM.createPortal(<OffCanvasOverlay>{children}</OffCanvasOverlay>,portalElement)}
-      
+      {ReactDOM.createPortal(
+        <OffCanvasOverlay>{children}</OffCanvasOverlay>,
+        portalElement
+      )}
     </>
   );
 };
 
 OffCanvas.propTypes = {
+  children: PropTypes.node,
+  setCartIsShow: PropTypes.func,
+};
+OffCanvasOverlay.propTypes = {
   children: PropTypes.node,
 };
 export default OffCanvas;
