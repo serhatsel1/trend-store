@@ -14,26 +14,39 @@ const ProductItem = () => {
 
   const [products, setProucts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [error, setError] = useState(null);
   const fetchProductHandler = async () => {
-    setIsLoading(true);
-    const res = await fetch(
-      "https://my-pos-application-api.onrender.com/api/products/get-all"
-    );
+    try {
+      setIsLoading(true);
+      const res = await fetch(
+        "https://my-pos-application-api.onrender.com/api/products/get-all"
+      );
+      if (res.status !== 200) {
+        throw new Error("something went wrong");
+      }
+      console.log(res);
+      const data = await res.json();
 
-    const data = await res.json();
+      const newData = data.map((item) => {
+        return {
+          id: item._id,
+          name: item.title,
+          ...item,
+        };
+      });
 
-    const newData = data.map((item) => {
-      return {
-        id: item._id,
-        name: item.title,
-        ...item,
-      };
-    });
-
-    await setProucts(newData);
-    setIsLoading(false);
+      setProucts(newData);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  let content = "fetch api";
+  if (isLoading) {
+    return (content = "Loading...");
+  }
   return (
     <>
       {products?.map((product, i) => (
@@ -50,8 +63,9 @@ const ProductItem = () => {
           </button>
         </li>
       ))}
+      {error && <p>{error}</p>}
       <button className="button" onClick={fetchProductHandler}>
-        {isLoading ? "Loading..." : "fetch api"}
+        {content}
       </button>
     </>
   );
