@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 // import products from "../productData";
 
 import "./ProductItem.css";
@@ -42,6 +42,10 @@ const ProductItem = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchProductHandler();
+  }, []);
 
   let content = "fetch api";
   if (isLoading) {
